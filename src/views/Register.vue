@@ -1,6 +1,6 @@
 <template>
   <div class="outer">
-    <h2 class="title">ログイン</h2>
+    <h2 class="title">会員登録</h2>
     <input
       type="email"
       class="input"
@@ -13,7 +13,7 @@
       placeholder="パスワード"
       v-model="password"
     />
-    <button class="button" @click="login()">ログイン</button>
+    <button class="button" @click="register">アカウント作成</button>
   </div>
 </template>
 
@@ -26,8 +26,8 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("login", {
+    register() {
+      this.$store.dispatch("register", {
         email: this.email,
         password: this.password,
       });
