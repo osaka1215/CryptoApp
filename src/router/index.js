@@ -9,11 +9,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/list',
-    name: 'List',
-    component: List
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -24,11 +19,17 @@ const routes = [
     component: Register
   },
   {
-    path: '/detail',
+    path: '/list',
+    name: 'List',
+    component: List
+  },
+  {
+    path: '/detail/:coin',
     name: 'Detail',
     component: Detail,
-  }
-]
+    props: true,
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',

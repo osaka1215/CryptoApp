@@ -1,20 +1,37 @@
 <template>
   <div>
     <h2 class="title">通貨一覧</h2>
-    <table class="table">
+    <table id="elements" class="table">
       <tr v-for="(data, index) in names" :key="index">
-        <th @click="transition()">銘柄名:{{ data.name }}</th>
+        <th @click="transition()">{{ data.name }}</th>
         <td>現在の価格：</td>
       </tr>
     </table>
+    <br />
+    <button class="button" @click="logOut">ログアウト</button>
   </div>
 </template>
 
 <script>
+import router from "../router/index";
 export default {
   methods: {
     transition() {
-      this.$router.push({ name: "Detail" });
+      let elements = document.getElementById("elements");
+      let elements_th = elements.getElementsByTagName("th");
+      let elements_length = elements_th.length;
+
+      for (let i = 0; i < elements_length; i++) {
+        elements_th[i].onclick = function () {
+          router.replace({
+            name: "Detail",
+            params: { coin: this.innerHTML },
+          });
+        };
+      }
+    },
+    logOut() {
+      this.$router.push({ name: "Login" });
     },
   },
   data() {
@@ -71,5 +88,16 @@ export default {
 .table th,
 td {
   border-bottom: solid 3px #017fe5;
+}
+.button {
+  font-size: 20px;
+  width: 250px;
+  height: 50px;
+  color: #fff;
+  background-color: #017fe5;
+  border: solid 0px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
