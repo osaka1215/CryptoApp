@@ -1,24 +1,65 @@
 <template>
   <div class="outer">
     <h2 class="title">会員登録</h2>
-    <input
-      type="email"
-      class="input"
-      placeholder="Eメールアドレス"
-      v-model="email"
-    />
-    <input
-      type="password"
-      class="input"
-      placeholder="パスワード"
-      v-model="password"
-    />
-    <button class="button" @click="register">アカウント作成</button>
+    <Validation-observer ref="obs" v-slot="ObserverProps">
+      <ValidationProvider rules="required|email">
+        <div slot-scope="ProviderProps">
+          <input
+            type="email"
+            name="Eメールアドレス"
+            class="input"
+            placeholder="Eメールアドレス"
+            v-model="email"
+          />
+          <p>{{ ProviderProps.errors[0] }}</p>
+        </div>
+      </ValidationProvider>
+      <ValidationProvider rules="required|min:8">
+        <div slot-scope="ProviderProps">
+          <input
+            type="password"
+            name="パスワード"
+            class="input"
+            placeholder="パスワード"
+            v-model="password"
+          />
+          <p>{{ ProviderProps.errors[0] }}</p>
+        </div>
+      </ValidationProvider>
+      <button
+        class="button"
+        @click="register()"
+        :disabled="ObserverProps.invalid || !ObserverProps.validated"
+      >
+        会員登録
+      </button>
+    </Validation-observer>
   </div>
 </template>
 
 <script>
+import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { required, email, min } from "vee-validate/dist/rules";
+
+extend("required", {
+  ...required,
+  message: "{_field_}は必須です",
+});
+extend("email", {
+  ...email,
+  message: "{_field_}が正しく入力されていません",
+});
+extend("min", {
+  ...min,
+  message: "{_field_}は8字以上です",
+});
+
 export default {
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
+
   data() {
     return {
       email: "",

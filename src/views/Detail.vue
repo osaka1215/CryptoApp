@@ -1,27 +1,26 @@
 <template>
   <div>
-    <h2 class="title">{{ this.name }}の詳細</h2>
-    <p>{{ coin }}</p>
+    <h2 class="title">{{ this.$route.params.coin }}の詳細</h2>
     <table class="table">
       <tr>
         <th>売り注文の最良気配値</th>
-        <td>{{ this.ask }}円</td>
+        <td>¥{{ this.ask }}</td>
       </tr>
       <tr>
         <th>買い注文の最良気配値</th>
-        <td>{{ this.bid }}円</td>
+        <td>¥{{ this.bid }}</td>
       </tr>
       <tr>
         <th>最高気配値</th>
-        <td>{{ this.high }}円</td>
+        <td>¥{{ this.high }}</td>
       </tr>
       <tr>
         <th>最低気配値</th>
-        <td>{{ this.low }}円</td>
+        <td>¥{{ this.low }}</td>
       </tr>
       <tr>
         <th>最終取引価格</th>
-        <td>{{ this.last }}円</td>
+        <td>¥{{ this.last }}</td>
       </tr>
       <tr>
         <th>約定日時</th>
@@ -52,9 +51,8 @@ export default {
   },
   created() {
     this.$axios
-      .get("/public/v1/ticker?symbol=${this.coin}")
+      .get(`/public/v1/ticker?symbol=${this.coin}`)
       .then((response) => {
-        console.log(response);
         this.name = response.data.data[0].symbol;
         this.ask = response.data.data[0].ask;
         this.bid = response.data.data[0].bid;
@@ -62,6 +60,24 @@ export default {
         this.low = response.data.data[0].low;
         this.last = response.data.data[0].last;
         this.timestamp = response.data.data[0].timestamp;
+
+        let date = new Date(this.timestamp);
+        this.timestamp =
+          "" +
+          date.getFullYear() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getDate() +
+          "  " +
+          date.getHours() +
+          ":" +
+          date.getMinutes() +
+          ":" +
+          date.getSeconds();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   },
 };

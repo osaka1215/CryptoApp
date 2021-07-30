@@ -4,7 +4,7 @@
     <table id="elements" class="table">
       <tr v-for="(data, index) in names" :key="index">
         <th @click="transition()">{{ data.name }}</th>
-        <td>現在の価格：</td>
+        <td>最終取引価格:¥{{ data.price }}</td>
       </tr>
     </table>
     <br />
@@ -23,7 +23,7 @@ export default {
 
       for (let i = 0; i < elements_length; i++) {
         elements_th[i].onclick = function () {
-          router.replace({
+          router.push({
             name: "Detail",
             params: { coin: this.innerHTML },
           });
@@ -31,23 +31,23 @@ export default {
       }
     },
     logOut() {
-      this.$router.push({ name: "Login" });
+      this.$store.dispatch("logOut");
     },
   },
   data() {
     return {
       names: [
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
-        { name: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
+        { name: "", price: "" },
       ],
     };
   },
@@ -66,7 +66,11 @@ export default {
       .then((response) => {
         for (let i = 0; i < this.names.length; i++) {
           this.names[i].name = response.data.data[i].symbol;
+          this.names[i].price = response.data.data[i].last;
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   },
 };
