@@ -33,6 +33,7 @@
       >
         会員登録
       </button>
+      <button class="button" @click="transition">ログイン</button>
     </Validation-observer>
   </div>
 </template>
@@ -74,6 +75,9 @@ export default {
       });
       this.email = "";
       this.password = "";
+    },
+    transition() {
+      this.$router.push({ name: "Login" });
     },
   },
 };
